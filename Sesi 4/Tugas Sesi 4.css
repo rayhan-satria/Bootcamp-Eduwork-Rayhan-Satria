@@ -1,0 +1,38 @@
+body {
+    background-color: #F5F5F5;
+    font-family: "Inter", sans-serif;
+    color: #404040;
+    font-size: 18px;
+}
+
+.p-16px {
+    padding: 16px;
+}
+
+.border-grey {
+    border: 1px solid grey;
+}
+
+.radius-8px {
+    border-radius: 8px;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-regular {
+    font-weight: 400;
+}
+
+.btn-sidebar {
+    padding: 12px;
+}
