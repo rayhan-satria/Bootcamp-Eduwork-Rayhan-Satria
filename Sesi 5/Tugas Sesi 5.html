@@ -1,11 +1,129 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device width, initial-scale= 1.0">
-        <title>Tugas Sesi 5</title>
-    </head>
-    <body>
-        
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffea</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+  <!-- Styling manual -->
+  <link rel="stylesheet" href="Tugas Sesi 5.css">
+
+  <!-- Fonts custom -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold f-play" href="#">coffea</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link active f-poppins" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link f-poppins mb-2" href="#produk-section">Products</a></li>
+        </ul>
+        <!-- Tombol Keranjang Belanja -->
+        <button class="btn btn-outline-light position-relative" data-bs-toggle="modal" data-bs-target="#staticBackdropCart">
+          <i class="bi bi-cart-fill me-1 f-poppins"></i> Cart
+          <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <div class="hero-banner text-center mb-5">
+    <div class="container">
+      <h1 class="display-4 fw-bold f-outfit">WELCOME</h1>
+      <p class="lead f-play">Elevate Your Daily Coffee Ritual with Coffea’s Premium Roasts <br>Discover rich, locally-sourced flavors and a warm atmosphere tailored for you.</p>
+      <a href="#produk-section" class="btn btn-lg mt-3 f-poppins">Order Now</a>
+    </div>
+  </div>
+
+  <!-- Container Utama Produk -->
+  <div class="container mb-5" id="produk-section">
+    <div class="row mb-4">
+      <div class="col-md-8 mb-3 mb-md-0">
+        <!-- Filter Kategori Button Group -->
+        <div class="d-flex gap-2" id="filter-buttons">
+          <button class="btn btn-onClick btn-filter active f-poppins" onclick="filterProducts('all')">All</button>
+          <button class="btn btn-onClick btn-filter" onclick="filterProducts('Hot Coffee')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 83 83"><path fill="#fff" fill-opacity=".8" d="M64.656 29.36H8.06a2.573 2.573 0 0 0-2.573 2.573v15.435a30.97 30.97 0 0 0 10.464 23.153H8.06a2.573 2.573 0 1 0 0 5.145h56.595a2.572 2.572 0 1 0 0-5.145h-7.891a31.06 31.06 0 0 0 8.682-12.891 12.86 12.86 0 0 0 12.071-12.834v-2.572A12.863 12.863 0 0 0 64.656 29.36m7.717 15.436a7.72 7.72 0 0 1-5.53 7.396c.254-1.595.383-3.208.385-4.824V34.95a7.72 7.72 0 0 1 5.145 7.273zM33.786 21.643v-10.29a2.573 2.573 0 0 1 5.145 0v10.29a2.573 2.573 0 1 1-5.145 0m10.29 0v-10.29a2.573 2.573 0 1 1 5.145 0v10.29a2.573 2.573 0 0 1-5.145 0m-20.58 0v-10.29a2.572 2.572 0 1 1 5.145 0v10.29a2.572 2.572 0 1 1-5.145 0"/></svg>
+          </button>
+          <button class="btn btn-onClick btn-filter" onclick="filterProducts('Cold Coffee')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 83 83"><path fill="#fff" fill-opacity=".8" d="m24.469 9.88-4.102 7.43h-6.098v6.683h2.333l2.39 11.886h-3.733l4.936 21.83 3.164-.03 3.182 15.86h30.126l.21-1.056 2.97-14.807 3.009.03 4.922-21.829h-3.564l2.374-11.886h2.561v-6.682h-6.478l-4.117-7.43zm1.783 2.135h30.546l2.597 4.725h-35.76zm-9.287 7.42H66.43v2.443H16.965zm1.53 18.567H64.56l-3.973 17.552-19.092-.157-19.029.157z"/></svg>
+          </button>
+          <button class="btn btn-onClick btn-filter" onclick="filterProducts('Non Coffee')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 62 61"><path fill="#fff" fill-opacity=".8" fill-rule="evenodd" d="M12.715 0c-.514 0-1.016.13-1.442.371a2.3 2.3 0 0 0-.946.986L6.002 10.43h49.461L51.14 1.357c-.191-.4-.52-.744-.947-.986A2.93 2.93 0 0 0 48.752 0zm-2.543 58.658L6.291 37.495h48.884l-3.881 21.163c-.094.51-.402.975-.868 1.311-.467.336-1.06.52-1.675.521H12.715a2.9 2.9 0 0 1-1.675-.52c-.467-.337-.774-.802-.868-1.312M5.591 15.827h50.29c3.088 0 5.585 1.823 5.585 4.07v8.132c0 2.246-2.502 4.061-5.586 4.061H5.585C2.497 32.09 0 30.275 0 28.028v-8.131c0-2.247 2.507-4.07 5.59-4.07" clip-rule="evenodd"/></svg>
+          </button>
+          <button class="btn btn-onClick btn-filter" onclick="filterProducts('Pastries')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 83 83"><path fill="#fff" fill-opacity=".8" d="M65.17 17.15H44.59V6.86h-6.86v10.29H17.15c-5.673 0-10.29 4.617-10.29 10.29v34.3a6.867 6.867 0 0 0 6.86 6.86H68.6a6.867 6.867 0 0 0 6.86-6.86v-34.3c0-5.673-4.617-10.29-10.29-10.29m-48.02 6.86h48.02a3.43 3.43 0 0 1 3.43 3.43l.004 10.702c-3.074.782-5.04 2.517-6.572 3.883-1.74 1.543-2.888 2.565-5.447 2.565-2.556 0-3.705-1.022-5.444-2.562-2.04-1.815-4.832-4.298-9.998-4.298-5.162 0-7.954 2.483-9.995 4.298-1.74 1.543-2.885 2.562-5.44 2.562-2.549 0-3.694-1.019-5.426-2.562-1.534-1.365-3.492-3.104-6.562-3.886V27.44a3.43 3.43 0 0 1 3.43-3.43m-3.43 37.73V45.571c.655.422 1.283.94 2 1.581 2.04 1.815 4.83 4.298 9.988 4.298 5.159 0 7.954-2.483 9.995-4.298 1.739-1.543 2.885-2.562 5.44-2.562s3.704 1.022 5.443 2.562c2.041 1.815 4.833 4.298 9.999 4.298s7.96-2.483 10.002-4.298c.724-.645 1.355-1.166 2.017-1.591l.003 16.18z"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Pencarian Produk -->
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" id="search-input" class="form-control f-outfit" placeholder="Search..." onkeyup="searchProducts()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid Produk -->
+    <div class="row g-4" id="product-list">
+      <!-- Produk akan dimasukkan melalui JavaScript secara dinamis -->
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdropCart" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content" style="background-color: #e2d9c8;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropCartLabel"><i class="bi bi-cart3 me-2"></i>Cart</h5>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group list-group-flush mb-3" id="cart-items">
+            <!-- Item cart dimasukkan via JS -->
+          </ul>
+          <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-3">
+            <span>Grand Total:</span>
+            <span id="cart-total">Rp 0</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn f-outfit" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn f-outfit" onclick="checkout()">CheckOut<i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-custom text-white text-center py-4 mt-auto">
+    <div class="container">
+      <p class="mb-0 f-play">&copy; 2026 coffea. All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <!-- Javascript -->
+  <script src="Tugas Sesi 5.js"></script>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

@@ -1,0 +1,54 @@
+    /* Styling Tambahan Custom */
+
+    body {
+        background-color: #e2d9c8;
+    }
+
+    .bg-custom {
+        background-color: #30261c;
+    }
+
+    .f-play {
+        font-family: 'Playfair Display', sans-serif;
+    }
+
+    .f-poppins {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .f-outfit {
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .hero-banner {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/espresso-surrounded-by-scattered-coffee-beans-dark-surface-1-6ac0cb3224864.avif');
+      background-size: cover;
+      color: #fff;
+      padding: 80px 0;
+    }
+
+    .card-product {
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .card-product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+
+    .card-product img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .btn-filter.active {
+      background-color: #0d6efd !important;
+      color: #fff !important;
+    }
+
+    .btn {
+        background-color: #2a0000;
+        color: #fff;
+    }
