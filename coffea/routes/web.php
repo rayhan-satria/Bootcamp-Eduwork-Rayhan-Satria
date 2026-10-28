@@ -18,10 +18,4 @@ Route::get('/checkout', function () {
     return 'Route checkout';
 });
 
-// Route::middleware('throttle:5,1')->group(function () {
-//     Route::get('/profile', function () {
-//         echo "Profile Page";
-//     });
-// });
-
 ?>
