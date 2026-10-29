@@ -1,23 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\OrderController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// --- MENGELOLA HALAMAN (PagesController) ---
+Route::get('/', [PagesController::class, 'home'])->name('home');
+Route::get('/about', [PagesController::class, 'about'])->name('about');
+Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
 
-Route::get('/products', function () {
-    return 'Route products';
-});
 
+// --- MENGELOLA PRODUK (ProductController - Resource CRUD) ---
+// Perintah tunggal ini otomatis bikinin route untuk index, create, store, show, edit, update, destroy
+Route::resource('products', ProductController::class);
+
+
+// --- ROUTE SISA SESI ---
 Route::get('/cart', function () {
-    return 'Route cart';
-});
+    return view('cart'); // Mengarah ke resources/views/cart.blade.php
+})->name('cart.index');
 
-Route::get('/checkout', function () {
-    return 'Route checkout';
-});
-
-Route::resource('products-resource', ProductsController::class);
-?>
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
