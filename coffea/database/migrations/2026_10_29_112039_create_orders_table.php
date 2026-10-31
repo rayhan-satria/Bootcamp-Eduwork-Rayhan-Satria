@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_name');
-            $table->string('customer_email');
-            $table->integer('total_price');
-            $table->string('status')->default('pending');
+            $table->string('order_number');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('product_id')->constrained('products');
+            $table->integer('quantity');
+            $table->integer('total');
+            $table->enum('status', ['pending', 'processing', 'completed', 'canceled'])->default('pending');
             $table->timestamps();
         });
     }
