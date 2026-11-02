@@ -4,15 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collectionpaginate;
+use App\Models\ProductCategories;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('products'); // Mengarah ke resources/views/products.blade.php
+        // 1. Ambil semua kategori buat ditampilin jadi tombol filter
+        $categories = ProductCategories::all();
+
+        // 2. Query dasar: ambil produk terbaru
+        $query = Product::latest();
+
+        // 3. CORE LOGIC: Jika user nge-klik filter kategori tertentu
+        if ($request->has('category') && $request->category != '') {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        // 4. Batasi menu per halaman (sesuaikan angka biar pagination jalan pas difilter)
+        // appends() berfungsi menjaga agar filter kategori gak ilang pas user klik halaman 2, 3, dst.
+        $menus = $query->paginate(8)->appends(['category' => $request->category]);
+        
+        return view('products', compact('menus', 'categories'));
     }
 
     /**

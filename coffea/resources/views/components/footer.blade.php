@@ -1,3 +1,3 @@
-<footer style="background: #222; color: #aaa; text-align: center; padding: 15px; margin-top: 50px;">
-    <p>&copy; {{ date('Y') }} Bootcamp E-Commerce. All Rights Reserved.</p>
+<footer class="bg-custom" style="color: #aaa; text-align: center; padding: 15px; margin-top: 99px;">
+    <p>&copy; {{ date('Y') }} coffea. All Rights Reserved.</p>
 </footer>
