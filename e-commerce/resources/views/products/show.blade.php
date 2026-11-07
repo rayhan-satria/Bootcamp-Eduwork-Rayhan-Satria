@@ -11,7 +11,7 @@
         <div class="mb-4">
             <a href="{{ route('products.index') }}" class="text-decoration-none text-secondary">
                 <i class="bi bi-arrow-left me-2"></i>
-                Back to Menu
+                Back to Products
             </a>
         </div>
 
@@ -64,7 +64,7 @@
                         </span>
                     @else
                         <span class="badge text-bg-danger">
-                            Fresh batch coming soon
+                            Out of stock
                         </span>
                     @endif
                 </div>
@@ -91,12 +91,12 @@
 
                             <button type="submit" class="btn flex-grow-1" style="background-color: #a77464;">
                                 <i class="bi bi-cart-plus me-2"></i>
-                                I want this!
+                                Order
                             </button>
 
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-coffee w-100">
+                        <a href="{{ route('login') }}" class="btn w-100" style="background-color: #A77464;">
                             Login to order
                         </a>
                     @endauth
@@ -104,7 +104,7 @@
                 @else
 
                     <button class="btn btn-secondary w-100" disabled>
-                        Fresh batch coming soon.
+                        Out of stock    
                     </button>
 
                 @endif

@@ -29,14 +29,14 @@
             <div class="bg-white rounded-4 shadow-sm text-center p-5">
                 <i class="bi bi-receipt display-1 text-secondary"></i>
 
-                <h4 class="mt-3">Your tray is empty</h4>
+                <h4 class="mt-3">Your cart is empty</h4>
 
                 <p class="text-secondary">
                     You haven't ordered anything yet.
                 </p>
 
                 <a href="{{ route('products.index') }}"
-                   class="btn btn-coffee mt-2">
+                   class="btn mt-2" style="background-color: #A77464">
                     Order up.
                 </a>
             </div>

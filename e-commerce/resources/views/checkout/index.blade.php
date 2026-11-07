@@ -20,7 +20,7 @@
             </h1>
 
             <p class="text-secondary">
-                Double check your table & cravings.
+                Double check your orders
             </p>
         </div>
 
@@ -60,7 +60,7 @@
                         <div class="mb-3">
                             <label for="table-number"
                                    class="form-label fw-semibold">
-                                Table number
+                                Shipping Address
                             </label>
 
                             <textarea
@@ -138,7 +138,7 @@
                             </span>
                         </div>
 
-                        <button type="submit" class="btn btn-coffee w-100">
+                        <button type="submit" class="btn w-100" style="background-color: #A77464">
                             Konfirmasi Pesanan
                             <i class="bi bi-check-circle ms-2"></i>
                         </button>

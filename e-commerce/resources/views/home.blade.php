@@ -1,7 +1,7 @@
 
 @extends('layouts.store')
 
-@section('title', 'Home - Coffea Store')
+@section('title', 'Home - E-commerce')
 
 @section('content')
 
@@ -14,16 +14,16 @@
                     <div class="hero-content">
 
                         <span class="hero-label mb-3" style="font-family: 'Playfair Display', serif; ">
-                            WELCOME TO COFFEA
+                            WELCOME TO E-COMMERCE
                         </span>
 
                         <h1 class="hero-title">
-                            A Perfect Cup for Your Perfect Day.
+                            The perfect find for a perfect lifestyle.
                         </h1>
 
                         <p class="hero-description">
-                            Discover your favorite coffee and enjoy
-                            every moment with a perfect cup of happiness.
+                            Discover your favorite items
+                            And enjoy every moment with a touch of happiness.
                         </p>
 
                         <a href="{{ route('products.index') }}"
@@ -37,9 +37,10 @@
 
                 <div class="col-lg-6">
                     <img
-                        src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1000"
-                        alt="Coffee"
+                        src="{{ asset('storage/background.avif') }}"
+                        alt="hero"
                         class="hero-image"
+                        style="width: 109.4%; height: 100%; max-height: 80vh; object-fit: contain; object-position: center;"
                     >
                 </div>
 
@@ -49,7 +50,7 @@
 
 
     <!-- CATEGORY SECTION -->
-    <section class="section-padding pb-3" id="categories" style="background-color: #C4A197">
+    <section class="section-padding pb-3" id="categories" style="background-color: #BEB1B8">
         <div class="container">
 
             <div class="text-center py-3">

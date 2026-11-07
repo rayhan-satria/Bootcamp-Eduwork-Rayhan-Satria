@@ -23,7 +23,7 @@
 
                 <div class="col-md-8">
                     <small class="text-secondary">
-                        Order nummber
+                        Order number
                     </small>
 
                     <h4 class="fw-bold mt-1">
@@ -130,7 +130,7 @@
                     </p>
 
                     <small class="text-secondary">
-                        Table number
+                        Shipping Address
                     </small>
 
                     <p class="mb-0">

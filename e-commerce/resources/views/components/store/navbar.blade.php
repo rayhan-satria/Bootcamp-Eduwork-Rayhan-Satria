@@ -5,7 +5,7 @@
         <a class="navbar-brand fw-bold fs-3"
            href="{{ route('home') }}"
            style="font-family: 'Playfair Display', serif; color: var(--coffee-brown);">
-            coffea<span style="color: var(--coffee-accent);">.</span>
+            E-Commerce<span style="color: var(--coffee-accent);">.</span>
         </a>
 
         <button class="navbar-toggler"
@@ -62,16 +62,26 @@
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <!-- Pilihan Profile -->
                             <li>
-                                <form action="{{ route('logout') }}" method="POST">
+                                <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                                    <i class="bi bi-person-fill me-2"></i> Profile
+                                </a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <!-- Pilihan Logout -->
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="m-0">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">
-                                        <i class="bi bi-box-arrow-right me-2"></i>
-                                        Logout
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
                                     </button>
                                 </form>
                             </li>
                         </ul>
+
                     </div>
 
                 @else

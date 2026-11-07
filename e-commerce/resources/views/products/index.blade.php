@@ -13,10 +13,10 @@
                 Our Collection
             </span>
             <h1 class="display-5 fw-bold mt-2" style="font-family: 'Playfair Display', serif;">
-                Explore Our Menu
+                Explore Our Products
             </h1>
             <p class="text-secondary">
-                Find your favorite brew and the perfect bites to match your day.
+                Find your ultimate favorites and the perfect deals to match your vibe.
             </p>
         </div>
 
@@ -28,7 +28,7 @@
                     type="text"
                     name="search"
                     class="form-control"
-                    placeholder="What are you craving today?"
+                    placeholder="What are you looking for?"
                     value="{{ request('search') }}"
                 >
             </div>

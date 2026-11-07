@@ -7,12 +7,12 @@
             <div class="col-md-5">
                 <h3 class="fw-bold mb-3"
                     style="font-family: 'Playfair Display', serif;">
-                    coffea.
+                    E-Commerce.
                 </h3>
 
                 <p class="text-light opacity-75">
-                    We serve the richest coffee in the city.
-                    A perfect cup for every moment.
+                    We bring you the absolute best essentials,
+                    The perfect choice for every lifestyle.
                 </p>
             </div>
 
@@ -51,7 +51,7 @@
         <hr class="border-light opacity-25 my-4">
 
         <div class="text-center text-light opacity-75 small">
-            &copy; {{ date('Y') }} Coffea. All rights reserved.
+            &copy; {{ date('Y') }} E-Commerce. All rights reserved.
         </div>
 
     </div>
