@@ -13,13 +13,47 @@ class ProductController extends Controller
 
     // Menampilkan daftar produk untuk pengelola
 
-    public function manage()
-    {
-        $products = Product::with('category')
-            ->latest()
-            ->paginate(10);
 
-        return view('admin.products.index', compact('products'));
+    public function manage(Request $request)
+    {
+        $query = Product::with('category');
+
+        // Search berdasarkan nama produk
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter berdasarkan kategori
+        if ($request->filled('category')) {
+            $query->where('product_category_id', $request->category);
+        }
+
+        // Sorting
+        $sortOptions = [
+            'name_asc'  => ['name', 'asc'],
+            'name_desc' => ['name', 'desc'],
+            'price_asc' => ['price', 'asc'],
+            'price_desc'=> ['price', 'desc'],
+            'stock_asc' => ['stock', 'asc'],
+            'stock_desc'=> ['stock', 'desc'],
+        ];
+
+        $sort = $request->input('sort');
+
+        if (isset($sortOptions[$sort])) {
+            $query->orderBy(...$sortOptions[$sort]);
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(10)->withQueryString();
+
+        $categories = ProductCategory::orderBy('name')->get();
+
+        return view('admin.products.index', compact(
+            'products',
+            'categories'
+        ));
     }
 
     /**

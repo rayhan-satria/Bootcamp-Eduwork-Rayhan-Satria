@@ -29,6 +29,10 @@ Route::get('/categories/{productCategory:slug}', [ProductCategoryController::cla
 // ROUTE PRODUCTS UNTUK ADMIN
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/products', [ProductController::class, 'manage'])
         ->name('products.index');
 
@@ -96,15 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])
         ->name('orders.show');
 
-    Route::post('/checkout', [OrderController::class, 'store'])
-        ->name('checkout.store');
-
 });
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

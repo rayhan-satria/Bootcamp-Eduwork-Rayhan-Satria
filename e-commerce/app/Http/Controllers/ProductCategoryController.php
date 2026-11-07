@@ -9,11 +9,35 @@ use Illuminate\Support\Str;
 class ProductCategoryController extends Controller
 {
     // Menampilkan daftar kategori untuk
-    public function manage()
+    public function manage(Request $request)
     {
-        $categories = ProductCategory::withCount('products')
-            ->latest()
-            ->paginate(10);
+        $query = ProductCategory::withCount('products');
+
+        // Search berdasarkan nama kategori
+        if ($request->filled('search')) {
+            $query  ->where(function ($q) use ($request) {
+                $q  ->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('slug', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Sorting
+        $sortOptions = [
+            'name_asc'  => ['name', 'asc'],
+            'name_desc' => ['name', 'desc'],
+            'products_asc'  => ['products_count', 'asc'],
+            'products_desc' => ['products_count', 'desc'],
+        ];
+
+        $sort = $request->input('sort');
+
+        if (isset($sortOptions[$sort])) {
+            $query->orderBy(...$sortOptions[$sort]);
+        } else {
+            $query->latest();
+        }
+
+    $categories = $query->paginate(10)->withQueryString();
 
         return view('admin.categories.index', compact('categories'));
     }
