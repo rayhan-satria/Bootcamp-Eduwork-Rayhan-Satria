@@ -52,10 +52,12 @@
                     Reset
                 </a>
             </form>
-                <a href="{{ route('admin.categories.create') }}"
-                    class="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                <button
+                    type="button"
+                    onclick="document.getElementById('createCategoryModal').showModal()"
+                    class="px-4 py-2 ml-auto bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
                     + Tambah Kategori
-                </a>
+                </button>
 
         </div>
         {{-- Flash Message --}}
@@ -109,12 +111,15 @@
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center items-center gap-2">
 
-                                        <a
-                                            href="{{ route('admin.categories.edit', $category->id) }}"
-                                            class="px-3 py-1 bg-yellow-400 text-gray-900 text-sm rounded hover:bg-yellow-500"
-                                        >
-                                            Edit
-                                        </a>
+                                        <button
+                                            type="button"
+                                            data-id="{{ $category->id }}"
+                                            data-name="{{ $category->name }}"
+                                            data-description="{{ $category->description }}"
+                                            onclick="openEditModal(this)"
+                                            class="px-3 py-1 bg-yellow-400 text-gray-900 text-sm rounded hover:bg-yellow-500">
+                                            Edit Kategori
+                                        </button>
 
                                         <form
                                             action="{{ route('admin.categories.destroy', $category->id) }}"
@@ -155,4 +160,140 @@
         </div>
 
     </div>
+    <dialog id="createCategoryModal"
+    class="w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/50">
+
+    <div class="p-6">
+
+        <h2 class="text-xl font-bold text-gray-800 mb-5">
+            Tambah Kategori
+        </h2>
+
+        <form action="{{ route('admin.categories.store') }}" method="POST">
+            @csrf
+
+            <div class="mb-5">
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                    Nama Kategori
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value="{{ old('name') }}"
+                    required
+                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    placeholder="Contoh: Elektronik"
+                >
+
+                @error('name')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2 mt-3">
+                    Deskripsi Kategori
+                </label>
+
+                <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    value="{{ old('description') }}"
+                    required
+                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    placeholder="Tuliskan deskripsi kategori..."
+                >
+
+                @error('description')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <button
+                    type="button"
+                    onclick="document.getElementById('createCategoryModal').close()"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+<dialog id="editCategoryModal" class="w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/50">
+    <div class="p-6">
+
+        <h2 class="text-xl font-bold mb-4">Edit Kategori</h2>
+
+        <form id="editCategoryForm" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="mb-4">
+                <label for="editName" class="block text-sm font-medium mb-1">
+                    Nama Kategori
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    id="editName"
+                    required
+                    class="w-full border rounded-lg px-3 py-2">
+            </div>
+
+            <div class="mb-4">
+                <label for="editDescription" class="block text-sm font-medium mb-1">
+                    Deskripsi
+                </label>
+
+                <textarea
+                    name="description"
+                    id="editDescription"
+                    rows="3"
+                    class="w-full border rounded-lg px-3 py-2"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button
+                    type="button"
+                    onclick="document.getElementById('editCategoryModal').close()"
+                    class="px-4 py-2 bg-gray-200 rounded-lg">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+</dialog>
+<script>
+    function openEditModal(button) {
+        const categoryId = button.dataset.id;
+        const categoryName = button.dataset.name;
+        const categoryDescription = button.dataset.description;
+
+        const form = document.getElementById('editCategoryForm');
+
+        const updateUrl = @json(route('admin.categories.update', ['productCategory' => '__ID__']));
+
+        form.action = updateUrl.replace('__ID__', categoryId);
+
+        document.getElementById('editName').value = categoryName;
+        document.getElementById('editDescription').value = categoryDescription;
+
+        document.getElementById('editCategoryModal').showModal();
+    }
+</script>
 </x-app-layout>

@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -69,10 +68,12 @@
                 </a>
             </form>
 
-                <a href="{{ route('admin.products.create') }}"
-                class="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                <button
+                    type="button"
+                    onclick="document.getElementById('createProductModal').showModal()"
+                    class="px-4 py-2 ml-auto bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
                     + Tambah Produk
-                </a>
+                </button>
         </div>
 
         {{-- Flash Message --}}
@@ -149,12 +150,19 @@
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center items-center gap-2">
 
-                                        <a
-                                            href="{{ route('admin.products.edit', $product->id) }}"
-                                            class="px-3 py-1 bg-yellow-400 text-gray-900 text-sm rounded hover:bg-yellow-500"
-                                        >
+                                        <button
+                                            type="button"
+                                            data-id="{{ $product->id }}"
+                                            data-name="{{ $product->name }}"
+                                            data-category="{{ $product->product_category_id }}"
+                                            data-description="{{ $product->description }}"
+                                            data-price="{{ $product->price }}"
+                                            data-stock="{{ $product->stock }}"
+                                            data-image="{{ $product->image ? asset('storage/' . $product->image) : '' }}"
+                                            onclick="openEditModal(this)"
+                                            class="px-3 py-1 bg-yellow-400 text-gray-900 text-sm rounded hover:bg-yellow-500">
                                             Edit
-                                        </a>
+                                        </button>
 
                                         <form
                                             action="{{ route('admin.products.destroy', $product->id) }}"
@@ -195,4 +203,498 @@
         </div>
 
     </div>
+    <dialog id="createProductModal"
+        class="w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/50">
+
+        <div class="p-6">
+
+            <h2 class="text-xl font-bold text-gray-800 mb-5">
+                Tambah Produk
+            </h2>
+
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="mb-5">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nama Produk
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value="{{ old('name') }}"
+                        required
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        placeholder="Contoh: Sepatu"
+                    >
+
+                    @error('name')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <label for="product_category_id" class="block text-sm font-medium text-gray-700 mb-2 mt-3">
+                        Kategori
+                    </label>
+
+                        <select name="product_category_id" id="product_category_id" required>
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('product_category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    @error('product_category_id')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2 mt-3">
+                        Deskripsi Produk
+                    </label>
+
+                        <textarea
+                            name="description"
+                            id="description"
+                            rows="3"
+                            class="w-full rounded-lg border-gray-300 shadow-sm"
+                            placeholder="Tuliskan deskripsi produk...">{{ old('description') }}</textarea>
+
+                    @error('description')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-2 mt-3">
+                        Harga Produk
+                    </label>
+
+                    <input
+                        type="number"
+                        onkeydown="return event.key !== 'e' && event.key !== 'E'"
+                        name="price"
+                        id="price"
+                        value="{{ old('price') }}"
+                        required
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        placeholder="Masukkan harga produk..."
+                    >
+
+                    @error('price')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <label for="stock" class="block text-sm font-medium text-gray-700 mb-2 mt-3">
+                        Stok Produk
+                    </label>
+
+                    <input
+                        type="number"
+                        onkeydown="return event.key !== 'e' && event.key !== 'E'"
+                        name="stock"
+                        id="stock"
+                        value="{{ old('stock') }}"
+                        required
+                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        placeholder="Masukkan stok produk..."
+                    >
+
+                    @error('stock')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+
+                    <div class="mb-4">
+                        <label for="createImageInput" class="block mb-2 font-medium">
+                            Gambar Produk
+                        </label>
+
+                        <input
+                            type="file"
+                            name="image"
+                            id="createImageInput"
+                            accept="image/*"
+                            required
+                            class="w-full border rounded p-2"
+                        >
+
+                        {{-- Area Crop --}}
+                        <div id="createCropperWrapper" class="hidden mt-4">
+
+                            <div id="createImageCropper"></div>
+
+                            <button
+                                type="button"
+                                id="cropCreateImage"
+                                class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Terapkan Crop
+                            </button>
+
+                        </div>
+
+                        {{-- Preview Hasil Crop --}}
+                        <div class="mt-4">
+                            <img
+                                id="createImagePreview"
+                                src=""
+                                alt="Preview gambar produk"
+                                class="hidden w-48 h-48 object-cover rounded border"
+                            >
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="flex justify-end gap-3">
+                    <button
+                        type="button"
+                        onclick="document.getElementById('createProductModal').close()"
+                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                        Batal
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <dialog id="editProductModal" class="w-full max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/50">
+        <div class="p-6">
+            <h2 class="text-xl font-bold mb-4">Edit Produk</h2>
+            <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="mb-4">
+                    <label for="editName" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nama Produk
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        id="editName"
+                        required
+                        class="w-full border rounded-lg px-3 py-2">
+                </div>
+                <div class="mb-4">
+
+                    <label for="editCategory" class="block text-sm font-medium text-gray-700 mb-2">
+                        Kategori
+                    </label>
+
+                        <select
+                            name="product_category_id"
+                            id="editCategory"
+                            required
+                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+
+                            <option value="">Pilih Kategori</option>
+
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>                
+                </div>
+
+                <div class="mb-4">
+                    <label for="editDescription" class="block text-sm font-medium mb-1">
+                        Deskripsi Produk
+                    </label>
+                        <textarea
+                            name="description"
+                            id="editDescription"
+                            rows="3"
+                            class="w-full border rounded-lg px-3 py-2"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="editPrice" class="block text-sm font-medium mb-1">
+                        Harga Produk
+                    </label>
+
+                    <input
+                        type="number"
+                        name="price"
+                        id="editPrice"
+                        min="0"
+                        step="1"
+                        required
+                        class="w-full border rounded-lg px-3 py-2"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label for="editStock" class="block text-sm font-medium mb-1">
+                        Stok Produk
+                    </label>
+
+                    <input
+                        type="number"
+                        name="stock"
+                        id="editStock"
+                        min="0"
+                        required
+                        class="w-full border rounded-lg px-3 py-2"
+                    >                
+                </div>
+
+                <div class="mb-4">
+                    <label for="editImageInput" class="block mb-2 font-medium">
+                        Ganti Gambar Produk
+                    </label>
+
+                    <input
+                        type="file"
+                        name="image"
+                        id="editImageInput"
+                        accept="image/*"
+                        class="w-full border rounded p-2"
+                    >
+
+                    {{-- Area Crop --}}
+                    <div id="editCropperWrapper" class="hidden mt-4">
+                        <div id="editImageCropper"></div>
+
+                        <button
+                            type="button"
+                            id="cropEditImage"
+                            class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Terapkan Crop
+                        </button>
+                    </div>
+
+                    {{-- Preview Gambar --}}
+                    <div class="mt-4">
+                        <img
+                            id="editImagePreview"
+                            src=""
+                            alt="Preview gambar produk"
+                            class="hidden w-48 h-48 object-cover rounded border"
+                        >
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button
+                        type="button"
+                        onclick="document.getElementById('editProductModal').close()"
+                        class="px-4 py-2 bg-gray-200 rounded-lg">
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+    <script>
+        function openEditModal(button) {
+            const productId = button.dataset.id;
+
+            const form = document.getElementById('editProductForm');
+
+            const updateUrl = @json(route('admin.products.update', ['product' => '__ID__']));
+
+            form.action = updateUrl.replace('__ID__', productId);
+
+            document.getElementById('editName').value = button.dataset.name;
+            document.getElementById('editCategory').value = button.dataset.category;
+            document.getElementById('editDescription').value = button.dataset.description;
+            document.getElementById('editPrice').value = button.dataset.price;
+            document.getElementById('editStock').value = button.dataset.stock;
+
+            // Tampilkan gambar lama
+            const editImagePreview = document.getElementById('editImagePreview');
+
+            if (button.dataset.image) {
+                editImagePreview.src = button.dataset.image;
+                editImagePreview.classList.remove('hidden');
+            } else {
+                editImagePreview.src = '';
+                editImagePreview.classList.add('hidden');
+            }
+
+            // Reset input gambar
+            document.getElementById('editImageInput').value = '';
+                if (editCropper) {
+                    editCropper.destroy();
+                    editCropper = null;
+                }
+
+editCropperWrapper.classList.add('hidden');
+
+            document.getElementById('editProductModal').showModal();
+        }
+
+        let createCropper = null;
+
+            const createImageInput = document.getElementById('createImageInput');
+            const createCropperWrapper = document.getElementById('createCropperWrapper');
+            const createImageCropper = document.getElementById('createImageCropper');
+
+            createImageInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+
+                if (!file) return;
+
+                // Hapus instance cropper sebelumnya
+                if (createCropper) {
+                    createCropper.destroy();
+                }
+
+                // Tampilkan area crop
+                createCropperWrapper.classList.remove('hidden');
+
+                // Inisialisasi Croppie
+                createCropper = new Croppie(createImageCropper, {
+                    viewport: {
+                        width: 250,
+                        height: 250,
+                        type: 'square'
+                    },
+                    boundary: {
+                        width: 350,
+                        height: 300
+                    },
+                    enableZoom: true
+                });
+
+                // Baca gambar yang dipilih
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    createCropper.bind({
+                        url: e.target.result
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            const cropCreateImage = document.getElementById('cropCreateImage');
+            const createImagePreview = document.getElementById('createImagePreview');
+
+            cropCreateImage.addEventListener('click', async function () {
+
+                if (!createCropper) return;
+
+                // Ambil hasil crop
+                const croppedBlob = await createCropper.result({
+                    type: 'blob',
+                    size: 'viewport',
+                    format: 'webp',
+                    quality: 0.8
+                });
+
+                // Ubah Blob menjadi File
+                const croppedFile = new File(
+                    [croppedBlob],
+                    'product-image.webp',
+                    { type: 'image/webp' }
+                );
+
+                // Masukkan hasil crop ke input file
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+
+                createImageInput.files = dataTransfer.files;
+
+                // Tampilkan preview
+                createImagePreview.src = URL.createObjectURL(croppedBlob);
+                createImagePreview.classList.remove('hidden');
+
+                // Sembunyikan area crop
+                createCropperWrapper.classList.add('hidden');
+
+                // Hapus instance cropper
+                createCropper.destroy();
+                createCropper = null;
+            });
+
+        let editCropper = null;
+
+        const editImageInput = document.getElementById('editImageInput');
+        const editCropperWrapper = document.getElementById('editCropperWrapper');
+        const editImageCropper = document.getElementById('editImageCropper');
+        const editImagePreview = document.getElementById('editImagePreview');
+
+        editImageInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            if (editCropper) {
+                editCropper.destroy();
+            }
+
+            editCropperWrapper.classList.remove('hidden');
+
+            editCropper = new Croppie(editImageCropper, {
+                viewport: {
+                    width: 250,
+                    height: 250,
+                    type: 'square'
+                },
+                boundary: {
+                    width: 350,
+                    height: 300
+                },
+                enableZoom: true
+            });
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                editCropper.bind({
+                    url: e.target.result
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        const cropEditImage = document.getElementById('cropEditImage');
+
+            cropEditImage.addEventListener('click', async function () {
+
+                if (!editCropper) return;
+
+                const croppedBlob = await editCropper.result({
+                    type: 'blob',
+                    size: 'viewport',
+                    format: 'webp',
+                    quality: 0.8
+                });
+
+                const croppedFile = new File(
+                    [croppedBlob],
+                    'product-image.webp',
+                    { type: 'image/webp' }
+                );
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+
+                editImageInput.files = dataTransfer.files;
+
+                editImagePreview.src = URL.createObjectURL(croppedBlob);
+                editImagePreview.classList.remove('hidden');
+
+                editCropperWrapper.classList.add('hidden');
+
+                editCropper.destroy();
+                editCropper = null;
+            });
+    </script>
+
 </x-app-layout>

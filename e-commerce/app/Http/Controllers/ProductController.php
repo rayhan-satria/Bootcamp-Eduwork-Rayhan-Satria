@@ -98,12 +98,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_category_id' => 'required|exists:product_categories,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'product_category_id' => 'required|exists:product_categories,id',
+            'description' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
@@ -145,12 +145,12 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = ProductCategory::all();
+        // $categories = ProductCategory::all();
 
-        return view('admin.products.edit', compact(
-            'product',
-            'categories'
-        ));
+        // return view('admin.products.edit', compact(
+        //     'product',
+        //     'categories'
+        // ));
     }
 
     /**
@@ -161,10 +161,10 @@ class ProductController extends Controller
         $validated = $request->validate([
             'product_category_id' => 'required|exists:product_categories,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,avif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
