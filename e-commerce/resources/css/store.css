@@ -283,4 +283,8 @@ h1, h2, h3, h4, h5 {
         top: 100px;
     }
 
+    .user-dropdown {
+    min-width: 180px; /* Ukuran ideal dropdown menu */
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 
 // HOME
@@ -29,9 +30,8 @@ Route::get('/categories/{productCategory:slug}', [ProductCategoryController::cla
 // ROUTE PRODUCTS UNTUK ADMIN
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::get('/products', [ProductController::class, 'manage'])
         ->name('products.index');

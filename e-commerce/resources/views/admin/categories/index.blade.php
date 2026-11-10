@@ -76,7 +76,7 @@
         {{-- Table --}}
         <div class="bg-white shadow-sm rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="min-w-full divide-y divide-gray-200 table">
 
                     <thead class="bg-gray-50">
                         <tr>
@@ -118,7 +118,7 @@
                                             data-description="{{ $category->description }}"
                                             onclick="openEditModal(this)"
                                             class="px-3 py-1 bg-yellow-400 text-gray-900 text-sm rounded hover:bg-yellow-500">
-                                            Edit Kategori
+                                            Edit
                                         </button>
 
                                         <form

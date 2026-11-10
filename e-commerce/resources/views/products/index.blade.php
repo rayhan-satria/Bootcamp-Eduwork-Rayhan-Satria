@@ -1,4 +1,3 @@
-
 @extends('layouts.store')
 
 @section('title', 'Products | Coffea')

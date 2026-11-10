@@ -78,7 +78,7 @@
 
                 <div class="text-center">
                     <span class="section-label">OUR PRODUCTS</span>
-                    <h2 class="section-title mt-2">Featured Products</h2>
+                    <h2 class="section-title mt-2">Latest Products</h2>
                 </div>
 
             <div class="d-flex justify-content-between align-items-center mb-2">

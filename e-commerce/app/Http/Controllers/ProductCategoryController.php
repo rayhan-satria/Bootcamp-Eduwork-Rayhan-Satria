@@ -87,18 +87,22 @@ class ProductCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductCategory $productCategory)
+    public function show(Request $request, ProductCategory $productCategory)
     {
-        $products = $productCategory->products()        
+        $products = $productCategory->products()
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
             ->latest()
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
 
         return view('categories.show', compact(
             'productCategory',
             'products'
         ));
     }
-
+   
     /**
      * Show the form for editing the specified resource.
      */

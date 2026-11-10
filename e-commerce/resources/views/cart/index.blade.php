@@ -14,7 +14,7 @@
             </span>
             <h1 class="display-5 fw-bold mt-2"
                 style="font-family: 'Playfair Display', serif;">
-                Order List
+                Cart Items
             </h1>
         </div>
 

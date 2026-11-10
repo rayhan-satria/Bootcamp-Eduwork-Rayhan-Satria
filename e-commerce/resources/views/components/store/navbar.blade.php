@@ -41,19 +41,7 @@
             </ul>
 
             <div class="d-flex align-items-center gap-3">
-
                 @auth
-                    <a href="{{ route('cart.index') }}"
-                       class="nav-link"
-                       title="Shopping Cart">
-                        <i class="bi bi-cart3 fs-5"></i>
-                    </a>
-
-                    <a href="{{ route('orders.index') }}"
-                       class="nav-link">
-                        My Orders
-                    </a>
-
                     <div class="dropdown">
                         <button class="btn btn-outline-dark dropdown-toggle"
                                 type="button"
@@ -61,8 +49,31 @@
                             {{ auth()->user()->name }}
                         </button>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-sm-end user-dropdown shadow">
                             <!-- Pilihan Profile -->
+
+                            <li>
+                                <a href="{{ route('cart.index') }}"
+                                class="dropdown-item"
+                                title="Shopping Cart">
+                                    <i class="bi bi-cart-check me-2"></i>
+                                    My Cart
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a href="{{ route('orders.index') }}"
+                                class="dropdown-item"
+                                title="Order">
+                                    <i class="bi bi-bag-check me-2"></i>
+                                    My Orders
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
                             <li>
                                 <a href="{{ route('profile.edit') }}" class="dropdown-item">
                                     <i class="bi bi-person-fill me-2"></i> Profile

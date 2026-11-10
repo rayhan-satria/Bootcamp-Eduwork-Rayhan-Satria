@@ -1,4 +1,3 @@
-
 @props(['category'])
 
 <a href="{{ route('categories.show', $category->slug) }}"
@@ -15,7 +14,7 @@
         </p>
 
         <span class="d-inline-block mt-3 fw-semibold"
-              style="color: var(--coffee-brown);">
+              style="color: black;">
             Explore Category
             <i class="bi bi-arrow-right ms-1"></i>
         </span>

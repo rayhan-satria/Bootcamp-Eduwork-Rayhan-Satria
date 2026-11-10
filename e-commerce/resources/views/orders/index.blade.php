@@ -16,7 +16,7 @@
 
             <h1 class="display-5 fw-bold mt-2"
                 style="font-family: 'Playfair Display', serif;">
-                My Orders
+                Orders
             </h1>
 
             <p class="text-secondary">
