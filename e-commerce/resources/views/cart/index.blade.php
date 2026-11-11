@@ -1,7 +1,7 @@
 
 @extends('layouts.store')
 
-@section('title', 'Cart | Coffea')
+@section('title', 'Cart | E-Commerce')
 
 @section('content')
 

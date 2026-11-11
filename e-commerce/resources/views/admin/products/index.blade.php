@@ -97,7 +97,6 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Gambar</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nama Produk</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kategori</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Deskripsi</th>
@@ -121,10 +120,6 @@
                                     @else
                                         <span class="text-gray-400">Tidak ada gambar</span>
                                     @endif
-                                </td>
-
-                                <td class="px-6 py-4 text-sm text-gray-600">
-                                    {{ $product->id }}
                                 </td>
 
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">

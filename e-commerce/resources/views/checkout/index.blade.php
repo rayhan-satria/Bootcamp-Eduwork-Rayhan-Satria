@@ -1,7 +1,7 @@
 
 @extends('layouts.store')
 
-@section('title', 'Checkout | Coffea')
+@section('title', 'Checkout | E-Commerce')
 
 @section('content')
 
@@ -26,7 +26,11 @@
 
         <form action="{{ route('checkout.store') }}" method="POST">
             @csrf
-
+                <input
+                    type="hidden"
+                    name="checkout_mode"
+                    value="{{ $isBuyNow ? 'buy_now' : 'cart' }}"
+                >
             <div class="row g-4">
 
                 {{-- Shipping Information --}}

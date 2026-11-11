@@ -23,7 +23,7 @@
                     <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
                         {{ __('Product Category') }}
                     </x-nav-link>
-                    @endif <!-- PERBAIKAN DI SINI -->
+                    @endif 
                 </div>
             </div>
 
@@ -92,7 +92,7 @@
             <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
                 {{ __('Product Category') }}
             </x-responsive-nav-link>
-            @endif <!-- PERBAIKAN DI SINI -->
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

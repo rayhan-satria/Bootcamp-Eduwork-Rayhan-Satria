@@ -1,7 +1,7 @@
     
 @extends('layouts.store')
 
-@section('title', $product->name . ' | Coffea')
+@section('title', $product->name . ' | E-Commerce')
 
 @section('content')
 
@@ -74,8 +74,8 @@
 
                     @auth
                         <form action="{{ route('cart.store', $product->id) }}"
-                              method="POST"
-                              class="d-flex gap-3 align-items-center">
+                            method="POST"
+                            class="d-flex gap-3 align-items-center">
 
                             @csrf
 
@@ -89,12 +89,29 @@
                                 style="max-width: 100px;"
                             >
 
-                            <button type="submit" class="btn flex-grow-1" style="background-color: #a77464;">
+                            <button
+                                type="submit"
+                                name="action"
+                                value="cart"
+                                class="btn flex-grow-1"
+                                style="background-color: #a77464;"
+                            >
                                 <i class="bi bi-cart-plus me-2"></i>
                                 Order
                             </button>
 
-                        </form>
+                            <button
+                                type="submit"
+                                name="action"
+                                value="buy_now"
+                                class="btn flex-grow-1"
+                                style="background-color: #a77464;"
+                            >
+                                <i class="bi bi-lightning-fill me-2"></i>
+                                Buy Now
+                            </button>
+
+                        </form>                    
                     @else
                         <a href="{{ route('login') }}" class="btn w-100" style="background-color: #A77464;">
                             Login to order

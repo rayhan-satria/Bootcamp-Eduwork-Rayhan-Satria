@@ -45,15 +45,32 @@ class CartController extends Controller
     public function store(Request $request, Product $product)
     {
         $request->validate([
-            'quantity' => 'nullable|integer|min:1',
+            'quantity' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:' . $product->stock,
+            ],
         ]);
+
+        $quantity = (int) $request->quantity;
 
         if ($product->stock < 1) {
             return back()->with('error', 'Stok produk habis');
         }
 
-        $quantity = $request->input('quantity', 1);
+        // BUY NOW
+        if ($request->input('action') === 'buy_now') {
 
+            session()->put('buy_now', [
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+            ]);
+
+            return redirect()->route('checkout.index');
+        }
+
+        // ADD TO CART
         $cart = auth()->user()->cart()
             ->firstOrCreate();
 
@@ -78,55 +95,12 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')
-            ->with('success', 'Ditambahkan ke pesanan');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, CartItems $cartItem)
-    {
-        $cart = auth()->user()->cart;
-
-        abort_unless(
-            $cart && $cartItem->cart_id === $cart->id,
-            404
-        );
-
-        $request->validate([
-            'quantity' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:' . $cartItem->product->stock,
-            ],
-        ]);
-
-        $cartItem->update([
-            'quantity' => $request->quantity,
-        ]);
+        // Bersihkan session Buy Now jika user memilih Order
+        session()->forget('buy_now');
 
         return redirect()->route('cart.index')
-            ->with('success', 'Pesanan ditambahkan');
+            ->with('success', 'Ditambahkan ke keranjang');
     }
-
     /**
      * Remove the specified resource from storage.
      */

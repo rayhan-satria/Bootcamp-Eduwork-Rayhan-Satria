@@ -25,6 +25,37 @@ class OrderController extends Controller
 
     public function create()
     {
+        // Cek apakah user sedang menggunakan mode Buy Now
+        $buyNow = session('buy_now');
+
+        if ($buyNow) {
+            $product = Product::find($buyNow['product_id']);
+
+            if (!$product || $product->stock < $buyNow['quantity']) {
+                session()->forget('buy_now');
+
+                return redirect()
+                    ->back()
+                    ->with('error', 'Produk tidak tersedia atau stok tidak mencukupi');
+            }
+
+            $cartItems = collect([
+                (object) [
+                    'product' => $product,
+                    'quantity' => $buyNow['quantity'],
+                ]
+            ]);
+
+            $total = $product->price * $buyNow['quantity'];
+
+        return view('checkout.index', compact(
+            'cartItems',
+            'total'
+        ))->with('isBuyNow', true);        
+        
+        }
+
+        // Checkout reguler dari keranjang
         $cart = auth()->user()->cart;
 
         if (!$cart) {
@@ -47,9 +78,12 @@ class OrderController extends Controller
             return $item->product->price * $item->quantity;
         });
 
-        return view('checkout.index', compact('cartItems', 'total'));
-    }
+    return view('checkout.index', compact(
+        'cartItems',
+        'total'
+    ))->with('isBuyNow', false);    
 
+    }
     // Menampilkan detail pesanan
     public function show(Order $order)
     {
@@ -59,60 +93,84 @@ class OrderController extends Controller
 
         return view('orders.show', compact('order'));
     }
+
     // Memproses checkout
     public function store(Request $request)
     {
         $validated = $request->validate([
             'shipping_address' => 'required|string|min:10|max:1000',
+            'checkout_mode' => 'required|in:cart,buy_now',
         ]);
 
         $user = auth()->user();
 
-        $order = DB::transaction(function () use ($user, $validated) {
+        $isBuyNow = $validated['checkout_mode'] === 'buy_now';
+        $buyNow = session('buy_now');
 
-            // Mengunci cart user selama proses checkout
-            $cart = Cart::where('user_id', $user->id)
-                ->lockForUpdate()
-                ->first();
+        if ($isBuyNow && !$buyNow) {
+            return redirect()
+                ->route('products.index')
+                ->with('error', 'Data Buy Now tidak ditemukan');
+        }
 
-            if (!$cart) {
-                throw ValidationException::withMessages([
-                    'cart' => 'Keranjang masih kosong',
+        $order = DB::transaction(function () use (
+            $user,
+            $validated,
+            $isBuyNow,
+            $buyNow
+        ) {
+            $cart = null;
+
+            if ($isBuyNow) {
+                $items = collect([
+                    (object) [
+                        'product_id' => $buyNow['product_id'],
+                        'quantity' => $buyNow['quantity'],
+                    ],
                 ]);
-            }
+            } else {
+                $cart = Cart::where('user_id', $user->id)
+                    ->lockForUpdate()
+                    ->first();
 
-            $cartItems = $cart->cartItems()
-                ->get();
+                if (!$cart) {
+                    throw ValidationException::withMessages([
+                        'cart' => 'Keranjang masih kosong',
+                    ]);
+                }
 
-            if ($cartItems->isEmpty()) {
-                throw ValidationException::withMessages([
-                    'cart' => 'keranjang masih kosong',
-                ]);
+                $items = $cart->cartItems()->get();
+
+                if ($items->isEmpty()) {
+                    throw ValidationException::withMessages([
+                        'cart' => 'Keranjang masih kosong',
+                    ]);
+                }
             }
 
             $orderItemsData = [];
             $totalPrice = 0;
 
-            // Validasi stok dan ambil harga terkini
-            foreach ($cartItems as $cartItem) {
-
-                $product = Product::whereKey($cartItem->product_id)
+            foreach ($items as $item) {
+                $product = Product::whereKey($item->product_id)
                     ->lockForUpdate()
                     ->first();
 
                 if (!$product) {
                     throw ValidationException::withMessages([
-                        'cart' => 'Salah satu produk habis',
+                        'product' => 'Produk tidak ditemukan',
                     ]);
                 }
 
-                if ($product->stock < $cartItem->quantity) {
+                $quantity = (int) $item->quantity;
+
+                if ($quantity < 1 || $product->stock < $quantity) {
                     throw ValidationException::withMessages([
                         'stock' => "Stok {$product->name} tidak cukup",
                     ]);
                 }
 
-                $subtotal = $product->price * $cartItem->quantity;
+                $subtotal = $product->price * $quantity;
 
                 $totalPrice += $subtotal;
 
@@ -120,15 +178,13 @@ class OrderController extends Controller
                     'product_id' => $product->id,
                     'product_name' => $product->name,
                     'price' => $product->price,
-                    'quantity' => $cartItem->quantity,
+                    'quantity' => $quantity,
                     'subtotal' => $subtotal,
                 ];
 
-                // Kurangi stok produk
-                $product->decrement('stock', $cartItem->quantity);
+                $product->decrement('stock', $quantity);
             }
 
-            // Buat data pesanan utama
             $order = Order::create([
                 'user_id' => $user->id,
                 'order_number' => 'ORD-' . strtoupper(Str::random(10)),
@@ -137,17 +193,22 @@ class OrderController extends Controller
                 'status' => 'pending',
             ]);
 
-            // Simpan rincian produk pesanan
             $order->orderItems()->createMany($orderItemsData);
 
-            // Kosongkan keranjang
-            $cart->cartItems()->delete();
+            // Hanya checkout keranjang yang mengosongkan keranjang
+            if (!$isBuyNow) {
+                $cart->cartItems()->delete();
+            }
 
             return $order;
         });
 
+        if ($isBuyNow) {
+            session()->forget('buy_now');
+        }
+
         return redirect()
             ->route('orders.show', $order->id)
-            ->with('success', 'Pesanan diperbarui');
+            ->with('success', 'Pesanan berhasil dibuat');
     }
 }

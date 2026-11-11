@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', 'Products | Coffea')
+@section('title', 'Products | E-commerce')
 
 @section('content')
 
