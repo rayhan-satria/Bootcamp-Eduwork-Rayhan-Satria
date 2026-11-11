@@ -28,7 +28,7 @@ Route::get('/categories/{productCategory:slug}', [ProductCategoryController::cla
     ->name('categories.show');
 
 // ROUTE PRODUCTS UNTUK ADMIN
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('dashboard')->middleware('admin')->name('admin.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])
         ->name('dashboard');

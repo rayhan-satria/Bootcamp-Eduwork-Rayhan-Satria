@@ -1,5 +1,10 @@
 <section class="space-y-6">
     <header>
+    @if (session('error'))
+        <div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Delete Account') }}
         </h2>
@@ -14,8 +19,12 @@
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
     >{{ __('Delete Account') }}</x-danger-button>
 
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+    <x-modal
+        name="confirm-user-deletion"
+        :show="$errors->userDeletion->isNotEmpty() || session()->has('error')"
+        focusable
+    >        
+    <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
             @csrf
             @method('delete')
 

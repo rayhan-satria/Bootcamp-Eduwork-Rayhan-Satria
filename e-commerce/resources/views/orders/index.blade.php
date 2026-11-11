@@ -29,7 +29,7 @@
             <div class="bg-white rounded-4 shadow-sm text-center p-5">
                 <i class="bi bi-receipt display-1 text-secondary"></i>
 
-                <h4 class="mt-3">Your cart is empty</h4>
+                <h4 class="mt-3">Your order is empty</h4>
 
                 <p class="text-secondary">
                     You haven't ordered anything yet.

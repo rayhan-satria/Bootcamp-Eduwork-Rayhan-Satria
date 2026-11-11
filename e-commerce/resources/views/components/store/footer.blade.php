@@ -37,7 +37,7 @@
 
                 <p class="text-light opacity-75 mb-2">
                     <i class="bi bi-envelope me-2"></i>
-                    hello@coffea.com
+                    hello@ecommerce.com
                 </p>
 
                 <p class="text-light opacity-75">

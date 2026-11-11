@@ -48,6 +48,14 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // Cek apakah user masih memiliki pesanan
+        if ($user->orders()->exists()) {
+            return back()->with(
+                'error',
+                'Akun tidak dapat dihapus karena masih memiliki riwayat pesanan.'
+            );
+        }
+
         Auth::logout();
 
         $user->delete();

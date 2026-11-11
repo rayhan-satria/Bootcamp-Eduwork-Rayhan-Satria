@@ -5,9 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('admin.dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
                 </div>
 
                 <!-- Navigation Links -->
@@ -15,6 +13,7 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Homepage') }}
                     </x-nav-link>
+                    @admin
                     <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -24,6 +23,7 @@
                     <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
                         {{ __('Product Category') }}
                     </x-nav-link>
+                    @endif <!-- PERBAIKAN DI SINI -->
                 </div>
             </div>
 
@@ -80,6 +80,7 @@
                 {{ __('Homepage') }}
             </x-responsive-nav-link>
 
+            @admin
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
@@ -91,6 +92,7 @@
             <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
                 {{ __('Product Category') }}
             </x-responsive-nav-link>
+            @endif <!-- PERBAIKAN DI SINI -->
         </div>
 
         <!-- Responsive Settings Options -->

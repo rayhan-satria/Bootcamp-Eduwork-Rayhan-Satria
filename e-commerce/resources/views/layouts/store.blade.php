@@ -36,7 +36,7 @@
 
     {{-- Main Content --}}
     <main>
-        <div class="container pt-3">
+        <div class="container">
             <x-store.alerts />
         </div>
 
