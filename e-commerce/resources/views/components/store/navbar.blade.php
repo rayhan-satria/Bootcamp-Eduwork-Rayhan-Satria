@@ -75,12 +75,24 @@
                             <li><hr class="dropdown-divider"></li>
 
                             <li>
-                                <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                                    <i class="bi bi-person-fill me-2"></i> Profile
+                                <a href="{{ route('profile.edit') }}" 
+                                        class="dropdown-item">
+                                        <i class="bi bi-person-fill me-2"></i> 
+                                    Profile
                                 </a>
                             </li>
                             
                             <li><hr class="dropdown-divider"></li>
+
+                            @admin
+                                <a href="{{ route('admin.dashboard') }}" 
+                                        class="dropdown-item">
+                                        <i class="bi bi-pc-display-horizontal me-2"></i>
+                                    Dashboard
+                                </a>
+
+                            <li><hr class="dropdown-divider"></li>
+                            @endif
                             
                             <!-- Pilihan Logout -->
                             <li>
